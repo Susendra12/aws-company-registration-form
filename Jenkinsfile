@@ -5,53 +5,27 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('aws-company-registration-form') {
-                    sh 'mvn clean package -DskipTests'
-                }
+                sh 'mvn clean package -DskipTests'
             }
         }
 
         stage('Test') {
             steps {
-                dir('aws-company-registration-form') {
-                    sh 'mvn test'
-                }
+                sh 'mvn test'
             }
         }
 
         stage('Deploy') {
             steps {
-                dir('aws-company-registration-form') {
-                    sh '''
-                        echo "Stopping old application..."
-
-                        PID=$(pgrep -f "java -jar" || true)
-
-                        if [ -n "$PID" ]; then
-                            kill $PID
-                            sleep 5
-                        fi
-
-                        echo "Starting new application..."
-
-                        nohup java -jar target/*.jar > app.log 2>&1 &
-
-                        sleep 10
-
-                        echo "Application started successfully"
-
-                        ps -ef | grep java
-                    '''
-                }
+                echo 'Deploying application...'
             }
         }
     }
 
     post {
         success {
-            echo 'Build, Test and Deployment completed successfully!'
+            echo 'Pipeline completed successfully.'
         }
-
         failure {
             echo 'Pipeline failed. Check the console output.'
         }
