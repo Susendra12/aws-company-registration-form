@@ -55,7 +55,7 @@ public class CompanyController {
 
     @GetMapping
     public ResponseEntity<String> home(){
-    	return new ResponseEntity<String>("WElcome to home page",HttpStatus.ACCEPTED);
+    	return new ResponseEntity<String>("Welcome to my world",HttpStatus.ACCEPTED);
     }
 
     // GET ALL
