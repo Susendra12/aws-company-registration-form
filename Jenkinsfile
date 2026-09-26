@@ -15,9 +15,20 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+stage('Deploy') {
             steps {
-                echo 'Deploying application...'
+                sh '''
+                    echo "Deploying application..."
+
+                    sudo mkdir -p /opt/company-registration
+
+                    sudo cp target/Company-Registation-Form-0.0.1-SNAPSHOT.jar \
+                        /opt/company-registration/Company-Registation-Form.jar
+
+                    sudo systemctl restart company-registration
+
+                    sudo systemctl status company-registration --no-pager
+                '''
             }
         }
     }
