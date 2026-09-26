@@ -53,7 +53,7 @@ public class CompanyController {
         return companyService.create(request);
     }
 
-    @GetMapping
+    @GetMapping("/a")
     public ResponseEntity<String> home(){
     	return new ResponseEntity<String>("Welcome to my world",HttpStatus.ACCEPTED);
     }
