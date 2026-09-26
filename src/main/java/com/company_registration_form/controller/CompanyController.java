@@ -3,6 +3,7 @@ package com.company_registration_form.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,6 +53,10 @@ public class CompanyController {
         return companyService.create(request);
     }
 
+    @GetMapping
+    public ResponseEntity<String> home(){
+    	return new ResponseEntity<String>("WElcome to home page",HttpStatus.ACCEPTED);
+    }
 
     // GET ALL
 
