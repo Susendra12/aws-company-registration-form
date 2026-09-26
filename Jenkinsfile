@@ -16,21 +16,35 @@ pipeline {
         }
 
 stage('Deploy') {
-            steps {
-                sh '''
-                    echo "Deploying application..."
+    steps {
+        sh '''
+            echo "Stopping old application..."
 
-                    sudo mkdir -p /opt/company-registration
+            PID=$(pgrep -f "Company-Registation-Form-0.0.1-SNAPSHOT.jar" || true)
 
-                    sudo cp target/Company-Registation-Form-0.0.1-SNAPSHOT.jar \
-                        /opt/company-registration/Company-Registation-Form.jar
+            if [ -n "$PID" ]; then
+                echo "Found old application with PID: $PID"
+                kill $PID
+                sleep 5
+            else
+                echo "No old application is running"
+            fi
 
-                    sudo systemctl restart company-registration
+            echo "Starting new application..."
 
-                    sudo systemctl status company-registration --no-pager
-                '''
-            }
-        }
+            nohup java -jar target/Company-Registation-Form-0.0.1-SNAPSHOT.jar \
+                > app.log 2>&1 &
+
+            sleep 10
+
+            echo "Checking application..."
+
+            ps -ef | grep "[C]ompany-Registation-Form"
+
+            echo "Application started successfully"
+        '''
+         }
+       }
     }
 
     post {
